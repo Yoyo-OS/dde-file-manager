@@ -607,7 +607,7 @@ void DFMCrumbBar::onListViewContextMenu(const QPoint &point)
         QString virtualUrl(url.toString());
         if (VaultController::isVaultFile(virtualUrl))
             virtualUrl = VaultController::localPathToVirtualPath(url.toLocalFile());
-        QGuiApplication::clipboard()->setText(virtualUrl);
+        QGuiApplication::clipboard()->setText(virtualUrl.replace(FILE_ROOT, "/"));
     });
 
     menu->addAction(newWndIcon, QObject::tr("Open in new window"), [url]() {
