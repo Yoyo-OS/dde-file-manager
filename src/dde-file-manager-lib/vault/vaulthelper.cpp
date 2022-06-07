@@ -27,6 +27,7 @@
 #include "dialogs/dialogmanager.h"
 #include "dialogs/dtaskdialog.h"
 #include "controllers/vaultcontroller.h"
+#include "dfmapplication.h"
 
 #include <DWindowManagerHelper>
 #include <DForeignWindow>
@@ -147,7 +148,7 @@ bool VaultHelper::killVaultTasks()
 
 bool VaultHelper::isVaultEnabled()
 {
-    return true;
+    return !DFMApplication::genericAttribute(DFMApplication::GA_HiddenVault).toBool();
     if (!VaultController::ins()->isVaultVisiable())     // 判断域管策略,是否显示保险箱
         return false;
 

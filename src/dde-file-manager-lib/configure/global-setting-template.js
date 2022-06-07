@@ -282,6 +282,12 @@
                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
                     "options": [
                         {
+                            "key": "hide_vault",
+                            "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
+                            "type": "checkbox",
+                            "default": false
+                        },
+                        {
                             "key": "hide_system_partition",
                             "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
                             "type": "checkbox",
