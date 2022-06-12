@@ -24,6 +24,6 @@ jobs:
         sudo apt update -y
 
     - name: Install build dependencies
-      run: sudo mk-build-deps -i -t "apt-get --yes" -r
+      run: sudo apt-get build-dep dde-file-manager
     - name: Build Package
       run: dpkg-buildpackage -b -uc -us -j$(nproc)
