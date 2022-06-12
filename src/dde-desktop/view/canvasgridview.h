@@ -28,7 +28,7 @@
 #include <QScopedPointer>
 #include <dfilemenumanager.h>
 #include <QTime>
-
+#include <QProcess>
 #define DesktopCanvasPath           "/com/deepin/dde/desktop/canvas"
 #define DesktopCanvasInterface      "com.deepin.dde.desktop.Canvas"
 

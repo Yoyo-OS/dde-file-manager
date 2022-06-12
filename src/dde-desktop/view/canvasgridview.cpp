@@ -3298,15 +3298,14 @@ void CanvasGridView::handleContextMenuAction(int action)
 
     switch (action) {
     case DisplaySettings: {
-        QDBusInterface interface("com.deepin.dde.ControlCenter","/com/deepin/dde/ControlCenter","com.deepin.dde.ControlCenter");
-        interface.asyncCall("ShowModule",QVariant::fromValue(QString("display")));
+        QProcess::startDetached("yoyo-settings", QStringList() << "-m" << "display");
         break;
     }
     case CornerSettings:
         Desktop::instance()->showZoneSettings();
         break;
     case WallpaperSettings:
-        Desktop::instance()->ShowWallpaperChooser(m_screenName);
+        QProcess::startDetached("yoyo-settings", QStringList() << "-m" << "background");
         break;
     case MenuAction::SelectAll:
         this->selectAll();

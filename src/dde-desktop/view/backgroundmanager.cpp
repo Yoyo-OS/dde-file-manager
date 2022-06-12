@@ -190,7 +190,7 @@ void BackgroundManager::init()
 
 void BackgroundManager::onWallpaperChanged(QString path)
 {
-    onRestBackgroundManager();
+    pullImageSettings();
     emit wallpaperChanged();
 }
 

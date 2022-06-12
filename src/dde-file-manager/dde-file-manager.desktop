@@ -186,9 +186,9 @@ Name[tr]=Deepin Dosya Yöneticisi
 Name[ug]=ھۆججەت باشقۇرغۇچ
 Name[uk]=Файловий менеджер Deepin
 Name[vi]=Trình quản lý tệp tin
-Name[zh_CN]=深度文件管理器
-Name[zh_HK]=深度檔案管理員
-Name[zh_TW]=Deepin 檔案管理器
+Name[zh_CN]=文件管理器
+Name[zh_HK]=檔案管理員
+Name[zh_TW]=檔案管理器
 
 [Desktop Action new-window]
 Exec=dde-file-manager --new-window
