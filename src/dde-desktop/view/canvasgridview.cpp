@@ -2985,7 +2985,7 @@ void CanvasGridView::updateCanvas()
 {
     itemDelegate()->updateItemSizeHint();
     auto itemSize = itemDelegate()->sizeHint(QStyleOptionViewItem(), QModelIndex());
-    QMargins geometryMargins = QMargins(0, 0, 0, 0);
+    QMargins geometryMargins = QMargins(0, 25, 0, 0);
     d->updateCanvasSize(this->geometry().size(), this->geometry().size(), geometryMargins, itemSize);
 
     GridManager::instance()->updateGridSize(m_screenNum, d->colCount, d->rowCount);
