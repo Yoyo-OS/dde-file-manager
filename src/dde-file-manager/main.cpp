@@ -172,8 +172,16 @@ int main(int argc, char *argv[])
         handleEnvOfOpenAsAdmin();
     }
 
+    // 程序内强制添加"-platformtheme deepin"参数喂给Qt让Qt正确使用Deepin主题修复各种奇怪样式问题
+    QVector<char*> fakeArgs(argc + 2);
+    fakeArgs[0] = argv[0];
+    fakeArgs[1] = "-platformtheme";
+    fakeArgs[2] = "deepin";
+    for(int i = 1; i < argc; i++) fakeArgs[i + 2] = argv[i];
+    int fakeArgc = argc + 2; // 为啥DApplication的argc要用引用啊？
+
     SingleApplication::initSources();
-    SingleApplication app(argc, argv);
+    SingleApplication app(fakeArgc, fakeArgs.data());
 
     if (DFMGlobal::isWayLand()) {
         //以下代码用于视频预览使用
