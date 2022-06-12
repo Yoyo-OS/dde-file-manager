@@ -31,6 +31,10 @@ BackgroundManager::BackgroundManager(bool preview, QObject *parent)
     : QObject(parent)
     , windowManagerHelper(DWindowManagerHelper::instance())
     , m_preview(preview)
+    , m_interface("com.yoyo.Settings",
+                  "/Theme",
+                  "com.yoyo.Theme",
+                  QDBusConnection::sessionBus(), this)
 {
     init();
     QDBusConnection::sessionBus().connect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",  "NameOwnerChanged", this, SLOT(onWmDbusStarted(QString, QString, QString)));
@@ -178,8 +182,16 @@ void BackgroundManager::init()
         connect(windowManagerHelper, &DWindowManagerHelper::hasCompositeChanged,
                 this, &BackgroundManager::onRestBackgroundManager);
     }
-
+    if (m_interface.isValid()) {
+        connect(&m_interface, SIGNAL(wallpaperChanged(QString)), this, SLOT(onWallpaperChanged(QString)));
+    }
     onRestBackgroundManager();
+}
+
+void BackgroundManager::onWallpaperChanged(QString path)
+{
+    onRestBackgroundManager();
+    emit wallpaperChanged();
 }
 
 void BackgroundManager::pullImageSettings()
@@ -194,52 +206,10 @@ void BackgroundManager::pullImageSettings()
 QString BackgroundManager::getBackgroundFromWm(const QString &screen)
 {
     QString ret;
-    if (!screen.isEmpty() && wmInter) {
-
-        // 1.从窗管获取壁纸
-        int retry = 5;
-        static const int timeOut = 200;
-        int oldTimeOut = wmInter->timeout();
-        wmInter->setTimeout(timeOut);
-
-        while (retry--) {
-            qInfo() << "Get background by wm GetCurrentWorkspaceBackgroundForMonitor and sc:" << screen;
-            QDBusPendingReply<QString> reply = wmInter->GetCurrentWorkspaceBackgroundForMonitor(screen);
-            reply.waitForFinished();
-
-            if (reply.error().type() != QDBusError::NoError) {
-                qWarning() << "Get background failed by wmDBus and times:" << (5-retry)
-                           << reply.error().type() << reply.error().name() << reply.error().message();
-            } else {
-                ret = reply.argumentAt<0>();
-                qInfo() << "Get background path succeed:" << ret << "screen" << screen << "   times:" << (5 - retry);
-                break;
-            }
-        }
-        wmInter->setTimeout(oldTimeOut);
-
-        if (ret.isEmpty() || !QFile::exists(QUrl(ret).toLocalFile())) {
-
-            // 2.从配置文件解析壁纸
-            ret = getBackgroundFromWmConfig(screen);
-            if (ret.isEmpty() || !QFile::exists(QUrl(ret).toLocalFile())) {
-
-                // 3.使用默认壁纸
-                ret = getDefaultBackground();
-                qCritical() << "get background fail path :" << ret << "screen" << screen
-                            << "use default:" << ret;
-            } else {
-                qCritical() << "get background fail path :" << ret << "screen" << screen
-                            << "use wm config file:" << ret;
-            }
-        } else {
-            qInfo() << "getBackgroundFromWm GetCurrentWorkspaceBackgroundForMonitor path :" << ret << "screen" << screen;
-            m_wmInited = true;
-        }
-    } else {
-        qInfo() << "Get background path terminated screen:" << screen << wmInter;
+    
+    if (m_interface.isValid()) {
+        ret = m_interface.property("wallpaper").toString();
     }
-
     return ret;
 }
 

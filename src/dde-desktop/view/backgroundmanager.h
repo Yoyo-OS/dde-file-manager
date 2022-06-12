@@ -25,6 +25,8 @@
 
 #include "backgroundwidget.h"
 #include "screen/abstractscreen.h"
+#include <QDBusInterface>
+#include <QDBusConnection>
 
 #include <com_deepin_wm.h>
 #include <DWindowManagerHelper>
@@ -51,12 +53,15 @@ public:
     void setBackgroundImage(const QString &screen,const QString &path);
     inline QMap<QString,QString> backgroundImages() const {return m_backgroundImagePath;}
 signals:
+    void wallpaperChanged();
     void sigBackgroundBuilded(int mode); //通知canvasview
 public slots:
     void onBackgroundBuild();       //创建背景窗口
     void onSkipBackgroundBuild();   //不创建背景窗口，直接发完成信号
     void onResetBackgroundImage();
     void onWmDbusStarted(QString name, QString oldOwner, QString newOwner); //窗管dbus服务启动完成
+private slots:
+    void onWallpaperChanged(QString);
 protected slots:
     void onRestBackgroundManager(); //重置背景，响应窗管改变
     void onScreenGeometryChanged();    //响应屏幕大小改变
@@ -72,6 +77,7 @@ protected:
     WMInter *wmInter = nullptr;
     DWindowManagerHelper* windowManagerHelper = nullptr;
 private:
+    QDBusInterface m_interface;
     bool m_preview = false; //壁纸预览
     bool m_visible = true;
     int currentWorkspaceIndex = 1;
