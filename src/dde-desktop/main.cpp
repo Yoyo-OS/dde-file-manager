@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 {
     QString startTime = QDateTime::currentDateTime().toString("yyyyMMdd.hh:mm:ss:zzz");
     //for qt5platform-plugins load DPlatformIntegration or DPlatformIntegrationParent
-    if (qEnvironmentVariableIsEmpty("XDG_CURRENT_DESKTOP")){
+    if (qgetenv("XDG_CURRENT_DESKTOP").toLower() != "deepin") {
         qputenv("XDG_CURRENT_DESKTOP", "Deepin");
     }
 
