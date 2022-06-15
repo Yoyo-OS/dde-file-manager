@@ -102,6 +102,8 @@
 #include "dgiofile.h"
 #include "dgiomount.h"
 
+#include <QDBusInterface>
+
 #ifdef SW_LABEL
 #include "sw_label/filemanagerlibrary.h"
 #endif
@@ -1016,17 +1018,11 @@ void AppController::actionSetAsWallpaper(const QSharedPointer<DFMUrlBaseEvent> &
     const DUrl &fileUrl = event->url();
 
     if (fileUrl.isLocalFile()) {
-        FileUtils::setBackground(fileUrl.toLocalFile());
-    } else {
-        const DAbstractFileInfoPointer &info = DFileService::instance()->createFileInfo(nullptr, fileUrl);
-
-        if (info) {
-            const QString &local_file = info->toLocalFile();
-
-            if (!local_file.isEmpty()) {
-                FileUtils::setBackground(local_file);
-            }
-        }
+        QDBusInterface iface("com.yoyo.Settings", "/Theme",
+                             "com.yoyo.Theme",
+                             QDBusConnection::sessionBus(), nullptr);
+        if (iface.isValid())
+            iface.call("setWallpaper", fileUrl.toLocalFile());
     }
 }
 
