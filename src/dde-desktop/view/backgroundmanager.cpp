@@ -183,7 +183,6 @@ void BackgroundManager::init()
                 this, &BackgroundManager::onRestBackgroundManager);
     }
     QDBusConnection::sessionBus().connect("com.yoyo.Settings", "/Theme", "com.yoyo.Theme",  "wallpaperChanged", this, SLOT(onWallpaperChanged(QString)));
-    onRestBackgroundManafileUrlger();
 }
 
 void BackgroundManager::onWallpaperChanged(QString path)
