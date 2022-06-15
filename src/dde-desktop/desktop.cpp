@@ -274,3 +274,11 @@ QList<int> Desktop::GetIconSize()
     QList<int> size{iconSize.width(), iconSize.height()};
     return  size;
 }
+
+void Desktop::EnableBackground(bool)
+{
+    if (d && d->m_background) {
+        d->m_background->setEnabled(v);
+        d->m_background->onRestBackgroundManager();
+    }
+}

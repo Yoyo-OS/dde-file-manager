@@ -149,6 +149,18 @@ void BackgroundManager::onRestBackgroundManager()
     }
 }
 
+void BackgroundManager::setEnabled(bool enabled)
+{
+    m_backgroundEnable = enabled;
+    //支持透明
+    if(m_backgroundEnable == false){
+        for(BackgroundWidgetPointer win:m_backgroundMap){
+            win.data()->windowHandle()->setOpacity(0.99);
+        }
+    }
+
+}
+
 void BackgroundManager::onScreenGeometryChanged()
 {
     bool changed = false;
