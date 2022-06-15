@@ -60,10 +60,11 @@ public slots:
     void onSkipBackgroundBuild();   //不创建背景窗口，直接发完成信号
     void onResetBackgroundImage();
     void onWmDbusStarted(QString name, QString oldOwner, QString newOwner); //窗管dbus服务启动完成
+    void onRestBackgroundManager(); //重置背景，响应窗管改变
+    void setEnabled(bool enabled);
 private slots:
     void onWallpaperChanged(QString);
 protected slots:
-    void onRestBackgroundManager(); //重置背景，响应窗管改变
     void onScreenGeometryChanged();    //响应屏幕大小改变
 private:
     void init();
